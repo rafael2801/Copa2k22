@@ -49,10 +49,11 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            Campeonato c = new Campeonato();
+            Campeonato c = new Campeonato("");
             Equipe[] equipes = c.carregarEquipes();
             public int getSize() { return equipes.length; }
-            public String getElementAt(int i) { return equipes[i]; }
+            @Override
+            public String getElementAt(int index) { return null;}
         });
         jScrollPane1.setViewportView(jList1);
 

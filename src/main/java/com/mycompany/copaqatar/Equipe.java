@@ -4,6 +4,8 @@
  */
 package com.mycompany.copaqatar;
 
+import com.mycompany.copaqatar.database.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +17,7 @@ import java.sql.SQLException;
  */
 public class Equipe {
     private String nome;
-    private ConnectionFactory factory = new ConnectionFactory();
+    public DatabaseConnection factory = new DatabaseConnection();
     
     public Equipe(String nome) throws SQLException{
         this.nome = nome;
@@ -33,7 +35,7 @@ public class Equipe {
         // definindo comando sql para inserir novo registro na tabela equipes com o nome definido por uma variável no lugar de ?
         String sql = "INSERT INTO equipes (nome) VALUES (?)";
         // tentando conexão com o BD para executar o comando sql
-        try(Connection conn = factory.obtemConexao()){
+        try(Connection conn = factory.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
             // informando a váriavel que irá substituir o ? do comando sql
             ps.setString(1, this.getNome());
@@ -47,7 +49,7 @@ public class Equipe {
         Equipe[] equipes = new Equipe[32];
         String sql = "SELECT * FROM equipes";
         // tentando conexão com o BD para executar o comando sql
-        try(Connection conn = factory.obtemConexao()){
+        try(Connection conn = factory.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
             try(ResultSet rs = ps.executeQuery()){
                 int i = 0;

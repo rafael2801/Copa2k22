@@ -4,6 +4,8 @@
  */
 package com.mycompany.copaqatar;
 
+import com.mycompany.copaqatar.database.DatabaseConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +15,7 @@ import java.sql.SQLException;
  * @author supor
  */
 public class Campeonato {
-    private ConnectionFactory factory = new ConnectionFactory();
+    public DatabaseConnection factory = new DatabaseConnection();
     private String nome;
     private Partida[] partidas = new Partida[48];
     public Equipe[] equipes = new Equipe[32];
@@ -63,7 +65,7 @@ public class Campeonato {
     public Equipe[] carregarEquipes(){
         String sql = "SELECT * FROM equipes";
         // tentando conexão com o BD para executar o comando sql
-        try(Connection conn = factory.obtemConexao()){
+        try(Connection conn = factory.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
             try(ResultSet rs = ps.executeQuery()){
                 // definindo comando sql para inserir novo registro na tabela equipes com o nome definido por uma variável no lugar de ?
