@@ -1,0 +1,58 @@
+CREATE DATABASE copa_do_mundo;
+use copa_do_mundo;
+CREATE TABLE campeonatos(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200), sede VARCHAR(200), ano INT);
+
+CREATE TABLE equipes_oficiais(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
+
+INSERT INTO equipes_oficiais (nome) VALUES ("Qatar");
+INSERT INTO equipes_oficiais (nome) VALUES ("Equador");
+INSERT INTO equipes_oficiais (nome) VALUES ("Senegal");
+INSERT INTO equipes_oficiais (nome) VALUES ("Holanda");
+INSERT INTO equipes_oficiais (nome) VALUES ("Inglaterra");
+INSERT INTO equipes_oficiais (nome) VALUES ("Irã");
+INSERT INTO equipes_oficiais (nome) VALUES ("Estados Unidos");
+INSERT INTO equipes_oficiais (nome) VALUES ("País de Gales");
+INSERT INTO equipes_oficiais (nome) VALUES ("Argentina");
+INSERT INTO equipes_oficiais (nome) VALUES ("Arábia Saudita");
+INSERT INTO equipes_oficiais (nome) VALUES ("México");
+INSERT INTO equipes_oficiais (nome) VALUES ("Polônia");
+INSERT INTO equipes_oficiais (nome) VALUES ("França");
+INSERT INTO equipes_oficiais (nome) VALUES ("Austrália");
+INSERT INTO equipes_oficiais (nome) VALUES ("Dinamarca");
+INSERT INTO equipes_oficiais (nome) VALUES ("Tunísia");
+INSERT INTO equipes_oficiais (nome) VALUES ("Espanha");
+INSERT INTO equipes_oficiais (nome) VALUES ("Costa Rica");
+INSERT INTO equipes_oficiais (nome) VALUES ("Alemanha");
+INSERT INTO equipes_oficiais (nome) VALUES ("Japão");
+INSERT INTO equipes_oficiais (nome) VALUES ("Bélgica");
+INSERT INTO equipes_oficiais (nome) VALUES ("Canada");
+INSERT INTO equipes_oficiais (nome) VALUES ("Marrocos");
+INSERT INTO equipes_oficiais (nome) VALUES ("Croácia");
+INSERT INTO equipes_oficiais (nome) VALUES ("Brasil");
+INSERT INTO equipes_oficiais (nome) VALUES ("Sérvia");
+INSERT INTO equipes_oficiais (nome) VALUES ("Suiça");
+INSERT INTO equipes_oficiais (nome) VALUES ("Camarões");
+INSERT INTO equipes_oficiais (nome) VALUES ("Portugal");
+INSERT INTO equipes_oficiais (nome) VALUES ("Gana");
+INSERT INTO equipes_oficiais (nome) VALUES ("Uruguai");
+INSERT INTO equipes_oficiais (nome) VALUES ("Coréia do Sul");
+
+CREATE TABLE equipes(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
+
+CREATE TABLE grupos(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
+
+INSERT INTO grupos (nome) VALUES ("A");
+INSERT INTO grupos (nome) VALUES ("B");
+INSERT INTO grupos (nome) VALUES ("C");
+INSERT INTO grupos (nome) VALUES ("D");
+INSERT INTO grupos (nome) VALUES ("E");
+INSERT INTO grupos (nome) VALUES ("F");
+INSERT INTO grupos (nome) VALUES ("G");
+INSERT INTO grupos (nome) VALUES ("H");
+
+CREATE TABLE classificacao ( id INT PRIMARY KEY AUTO_INCREMENT, equipe_id INT, FOREIGN KEY (equipe_id) REFERENCES equipes(id), grupo_id INT, FOREIGN KEY (grupo_id) REFERENCES grupos(id), pontos INT, vitorias INT, empates INT, derrotas INT, gols_pro INT, gols_contra INT);
+
+CREATE TABLE partidas(id INT PRIMARY KEY AUTO_INCREMENT, equipe_a_id INT, FOREIGN KEY (equipe_a_id) REFERENCES equipes(id), equipe_b_id INT, FOREIGN KEY (equipe_b_id) REFERENCES equipes(id), placar_equipe_a INT, placar_equipe_b INT);
+
+
+INSERT INTO classificacao (equipe_id, grupo_id, vitorias, empates, derrotas, pontos, gols_pro, gols_contra) VALUES (1, 1, 0, 0, 0, 0, 0, 0);

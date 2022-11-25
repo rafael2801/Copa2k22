@@ -4,6 +4,8 @@
  */
 package com.mycompany.copaqatar;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author supor
@@ -30,8 +32,6 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
         cadastrarEquipe = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -48,14 +48,6 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
 
         jLabel2.setText("jLabel2");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            Campeonato c = new Campeonato();
-            Equipe[] equipes = c.carregarEquipes();
-            public int getSize() { return equipes.length; }
-            public String getElementAt(int i) { return equipes[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,17 +57,11 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cadastrarEquipe)
                     .addComponent(nomeTime, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(47, 47, 47))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(110, Short.MAX_VALUE))))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,10 +76,8 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
                         .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                            .addComponent(jLabel2))))
+                .addContainerGap(163, Short.MAX_VALUE))
         );
 
         pack();
@@ -102,9 +86,10 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
     private void cadastrarEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEquipeActionPerformed
         String nome = nomeTime.getText();
         try{
-            Equipe equipe = new Equipe(nome);
-            equipe.salvarEquipe();
-        }catch(Exception e){
+            Equipe e = new Equipe(nome);
+            DAO dao = new DAO();
+            dao.salvarEquipe(e);
+        }catch(SQLException e){
             e.printStackTrace();
         }
     }//GEN-LAST:event_cadastrarEquipeActionPerformed
@@ -148,8 +133,6 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
     private javax.swing.JButton cadastrarEquipe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nomeTime;
     // End of variables declaration//GEN-END:variables
 }
