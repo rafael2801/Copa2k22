@@ -28,6 +28,16 @@ public class Campeonato {
         // buscar atributos no BD
         // this.nome = nome;
     }
+    
+    public Campeonato(int id) throws SQLException{
+        Campeonato c = dao.carregarCampeonato(id);
+        this.nome = c.getNome();
+        this.sede = c.getSede();
+        this.ano = c.getAno();
+        this.cadastrarEquipesOficiais();
+        this.setGrupos();
+        this.cadastrarGruposOficiais();
+    }
 
     public int getId() {
         return id;
@@ -70,6 +80,16 @@ public class Campeonato {
 
     public Equipe[] getEquipes() {
         return equipes;
+    }
+    
+    public String[] listarEquipes(){
+        String[] strings = new String[32];
+        int i = 0;
+        for(Equipe e : this.getEquipes()){
+            strings[i] = e.getNome();
+            i++;
+        }
+        return strings;
     }
 
     public void setEquipes(Equipe[] equipes) {

@@ -54,5 +54,4 @@ CREATE TABLE classificacao ( id INT PRIMARY KEY AUTO_INCREMENT, equipe_id INT, F
 
 CREATE TABLE partidas(id INT PRIMARY KEY AUTO_INCREMENT, equipe_a_id INT, FOREIGN KEY (equipe_a_id) REFERENCES equipes(id), equipe_b_id INT, FOREIGN KEY (equipe_b_id) REFERENCES equipes(id), placar_equipe_a INT, placar_equipe_b INT);
 
-
-INSERT INTO classificacao (equipe_id, grupo_id, vitorias, empates, derrotas, pontos, gols_pro, gols_contra) VALUES (1, 1, 0, 0, 0, 0, 0, 0);
+CREATE TABLE resultados( partida_id, pla
