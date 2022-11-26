@@ -6,6 +6,8 @@
 package com.mycompany.copaqatar;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -14,10 +16,19 @@ import java.sql.SQLException;
 public class CopaQatar {
 
     public static void main(String[] args) throws SQLException {
-        Campeonato copa = new Campeonato("Copa do Mundo - Catar 2022");
-        copa.gerarEquipesOficiais();
-        copa.gerarGruposOficiais(copa.equipes);
-        
+        DAO dao = new DAO();
+        Campeonato c = new Campeonato(1);
+        System.out.println(c.getNome());
+        //c.cadastrarEquipesOficiais();
+        //c.setGrupos();
+        //c.cadastrarGruposOficiais();
+        //Classificacao x = dao.carregarClassificacaoEquipe(c.getEquipes()[0]);
+        //TelaInicial ti = new TelaInicial();
+        //ti.setVisible(true);
+
+        //System.out.println(x.getEquipe().getNome());
+        // System.out.println(c.getGrupos()[0].getNome());
+        //c.cadastrarGruposOficiais();
 // Equipe[] equipes = copa.gerarEquipesOficiais();
 //            Grupo[] grupos = copa.gerarGruposOficiais(equipes);
 // 		for (Equipe e : equipes) {
@@ -29,7 +40,7 @@ public class CopaQatar {
 //     for (Grupo g : copa.grupos) {
 //           g.getGrupo();
 //           System.out.println();
-        }
-        
-    }
+//        }
 
+    }
+}

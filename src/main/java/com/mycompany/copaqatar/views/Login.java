@@ -33,8 +33,6 @@ public class Login {
                 user.setSuper(userSigned.getLogged());
                 user.setUser_name(userSigned.getUser_name());
 
-                System.out.println("O usuario é adm? " + user.getSuper() + " e está logado?" + user.getLogged());
-
                 if(user.getLogged()) {
                     this.frame.setVisible(false);
 //                    new Home();
@@ -62,7 +60,7 @@ public class Login {
         int frameHeight = (screenSize.height * 75) / 100;
 
         frame.setContentPane(this.container);
-        frame.setTitle("UMA COPA MUITO LOKA!");
+        frame.setTitle("Copa 2k22!");
         frame.setVisible(true);
         frame.setSize(frameWidth, frameHeight);
 
@@ -81,7 +79,6 @@ public class Login {
         ActionListener listener = e -> {
             String email = this.eMailTextField.getText();
             String password = this.passwordField1.getText();
-            System.out.println(email + " === " + password);
 
             DatabaseConnection connection = DatabaseConnection.getInstance();
             try {
@@ -96,7 +93,6 @@ public class Login {
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
-//            System.out.println("conn: " + conn.getConnection().equals(null) );
         };
 
         return listener;

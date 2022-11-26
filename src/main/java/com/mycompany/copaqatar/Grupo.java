@@ -4,26 +4,47 @@
  */
 package com.mycompany.copaqatar;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author supor
  */
 public class Grupo {
+    private int id;
     private char nome;
     private Equipe[] equipes = new Equipe[4];
     private Partida[] partidas = new Partida[48];
+    private DAO dao = new DAO();
     
-    public Grupo(char x, Equipe e1, Equipe e2, Equipe e3, Equipe e4){
-        this.nome = x;
-        this.equipes[0] = e1;
-        this.equipes[1] = e2;
-        this.equipes[2] = e3;
-        this.equipes[3] = e4;
+    public Grupo() throws SQLException{
+        //this.nome = x;
+        //this.equipes[0] = e1;
+        //this.equipes[1] = e2;
+        //this.equipes[2] = e3;
+        //this.equipes[3] = e4;
+        
+       
+        
+        // validar no BD se já há banco com este nome e se ainda não completou os oito grupos
+        
+        dao.salvarGrupo(this);
     }
     
-    public String getNome(){
-        String texto = "Grupo ";
-        return texto.concat(String.valueOf(this.nome));
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id){
+        this.id = id;
+    }
+    
+    public void setNome(String nome){
+        this.nome = nome.charAt(0);
+    }
+    
+    public char getNome(){
+        return this.nome;
     }
     
     public void getGrupo(){
