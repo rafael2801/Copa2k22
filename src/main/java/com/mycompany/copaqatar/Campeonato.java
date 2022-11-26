@@ -81,11 +81,11 @@ public class Campeonato {
     }
 
     public void setGrupos() throws SQLException {
-        this.grupos = dao.carregarGrupos();
+        this.grupos = this.dao.carregarGrupos();
     }
   
-    public Equipe[] setEquipesOficiais() throws SQLException{
-        return this.equipes = dao.carregarEquipesOficiais();
+    public Equipe[] cadastrarEquipesOficiais() throws SQLException{
+        return this.equipes = this.dao.carregarEquipesOficiais();
     }
     public void cadastrarGruposOficiais() throws SQLException{
         int e = 0;
@@ -94,7 +94,7 @@ public class Campeonato {
                 Classificacao c = new Classificacao();
                 c.setEquipe(this.equipes[e]);
                 c.setGrupo(g);
-                dao.salvarClassificacao(c);
+                this.dao.salvarClassificacao(c);
                 e++;
             }
         }

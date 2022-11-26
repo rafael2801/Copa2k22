@@ -18,12 +18,13 @@ public class CopaQatar {
     public static void main(String[] args) throws SQLException {
         DAO dao = new DAO();
         Campeonato c = new Campeonato();
-        c.setEquipesOficiais();
-        c.setGrupos();
-        c.cadastrarGruposOficiais();
-        Classificacao x = dao.carregarClassificacaoEquipe(c.getEquipes()[0]);
-        
-        System.out.println(x.getEquipe().getNome());
+        //c.cadastrarEquipesOficiais();
+        //c.setGrupos();
+        //c.cadastrarGruposOficiais();
+        //Classificacao x = dao.carregarClassificacaoEquipe(c.getEquipes()[0]);
+        TelaInicial ti = new TelaInicial();
+        ti.setVisible(true);
+        //System.out.println(x.getEquipe().getNome());
         // System.out.println(c.getGrupos()[0].getNome());
         //c.cadastrarGruposOficiais();
 // Equipe[] equipes = copa.gerarEquipesOficiais();
