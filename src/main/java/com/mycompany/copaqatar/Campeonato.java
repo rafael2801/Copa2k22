@@ -4,9 +4,6 @@
  */
 package com.mycompany.copaqatar;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
  *
@@ -19,6 +16,7 @@ public class Campeonato {
     private int ano;
     private Partida[] partidas = new Partida[48];
     private Equipe[] equipes = new Equipe[32];
+    private Classificacao[] classifificacao = new Classificacao[32];
     private Grupo[] grupos = new Grupo[8];
     private DAO dao = new DAO();
     
@@ -34,9 +32,9 @@ public class Campeonato {
         this.nome = c.getNome();
         this.sede = c.getSede();
         this.ano = c.getAno();
-        this.cadastrarEquipesOficiais();
-        this.setGrupos();
-        this.cadastrarGruposOficiais();
+        
+        //c.getEquipes()[0].setNome("Corinthians");
+
     }
 
     public int getId() {
@@ -81,11 +79,29 @@ public class Campeonato {
     public Equipe[] getEquipes() {
         return equipes;
     }
+
+    public Classificacao[] getClassifificacao() {
+        return classifificacao;
+    }
+
+    public void setClassifificacao() {
+        this.classifificacao = dao.carregarClassificacao();
+    }
     
     public String[] listarEquipes(){
         String[] strings = new String[32];
         int i = 0;
         for(Equipe e : this.getEquipes()){
+            strings[i] = e.getNome();
+            i++;
+        }
+        return strings;
+    }
+    
+    public String[] listarEquipesGrupo(Grupo g) throws SQLException{
+        String[] strings = new String[4];
+        int i = 0;
+        for(Equipe e : this.dao.carregarEquipesGrupo(g.getId())){
             strings[i] = e.getNome();
             i++;
         }
@@ -104,6 +120,11 @@ public class Campeonato {
         this.grupos = this.dao.carregarGrupos();
     }
   
+    public void cadastrarEquipe(String nome) throws SQLException{
+        Equipe e = new Equipe(nome);
+        dao.salvarEquipe(e);
+    }
+    
     public Equipe[] cadastrarEquipesOficiais() throws SQLException{
         return this.equipes = this.dao.carregarEquipesOficiais();
     }
@@ -118,5 +139,5 @@ public class Campeonato {
                 e++;
             }
         }
-    } 
+    }
 }

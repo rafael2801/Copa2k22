@@ -15,22 +15,7 @@ public class Grupo {
     private char nome;
     private Equipe[] equipes = new Equipe[4];
     private Partida[] partidas = new Partida[48];
-    private DAO dao = new DAO();
-    
-    public Grupo() throws SQLException{
-        //this.nome = x;
-        //this.equipes[0] = e1;
-        //this.equipes[1] = e2;
-        //this.equipes[2] = e3;
-        //this.equipes[3] = e4;
-        
-       
-        
-        // validar no BD se já há banco com este nome e se ainda não completou os oito grupos
-        
-        dao.salvarGrupo(this);
-    }
-    
+
     public int getId() {
         return id;
     }

@@ -13,6 +13,15 @@ import java.sql.SQLException;
 public class Equipe {
     private int id;
     private String nome;
+   
+    public Equipe(String nome){
+        this.nome = nome;
+    }
+    
+    public Equipe(int id, String nome){
+        this.setId(id);
+        this.setNome(nome);
+    }
     
     public int getId() {
         return id;
