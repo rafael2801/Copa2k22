@@ -21,7 +21,7 @@ public class DatabaseConnection {
                 IllegalAccessException, SQLException {
 
             String userName = "root";
-            String password = "Sp_964269849";
+            String password = "user_password";
             String url = "jdbc:mysql://localhost/copa?useTimezone=true&serverTimezone=UTC";
             String driver = "com.mysql.cj.jdbc.Driver";
             // Registra o driver do banco de dados
