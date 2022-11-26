@@ -1,8 +1,8 @@
 package com.mycompany.copaqatar.views;
 
 import com.mycompany.copaqatar.database.DatabaseConnection;
-import com.mycompany.copaqatar.database.UserService;
 import com.mycompany.copaqatar.models.User;
+import com.mycompany.copaqatar.service.AuthService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +27,7 @@ public class Login {
 
             DatabaseConnection connection = DatabaseConnection.getInstance();
             try {
-                UserService userService = new UserService(connection.getConnection());
+                AuthService userService = new AuthService(connection.getConnection());
                 User userSigned = userService.signIn(email, password);
                 user.setLogged(userSigned.getLogged());
                 user.setSuper(userSigned.getLogged());
@@ -85,7 +85,7 @@ public class Login {
 
             DatabaseConnection connection = DatabaseConnection.getInstance();
             try {
-                UserService userService = new UserService(connection.getConnection());
+                AuthService userService = new AuthService(connection.getConnection());
                 userService.signIn(email, password);
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
