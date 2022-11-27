@@ -146,9 +146,9 @@ public class DAO {
             try(ResultSet rs = ps.executeQuery()){
                 //System.out.print(rs.getString("nome"));
                 while(rs.next()){
-                    Equipe e = new Equipe();
-                    e.setId(rs.getInt("id"));
-                    e.setNome(rs.getString("nome"));
+                    Equipe e = new Equipe(rs.getInt("id"), rs.getString("nome"));
+//                    e.setId(rs.getInt("id"));
+//                    e.setNome(rs.getString("nome"));
                     return e;
                 }
             }
@@ -157,6 +157,67 @@ public class DAO {
         }
         return null;
     }
+    
+    public int quantidadeEquipesCadastradas() throws SQLException{
+        String sql = "SELECT * FROM equipes";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    rs.last();
+                    return rs.getRow();
+                }else{
+                    return 0;
+                }
+            }
+        }catch(Exception e){
+            return -1;
+        }
+    }
+    
+    public Equipe[] carregarEquipes(){
+        String sql = "SELECT * FROM equipes";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    rs.last();
+                    int qtdEquipes = rs.getRow();
+                    Equipe[] equipes = new Equipe[qtdEquipes];
+                    rs.beforeFirst();
+                    int i = 0;
+                    while(rs.next()){
+                        equipes[i] = this.carregarEquipe(rs.getInt("id"));
+                        i++;
+                    }
+                    return equipes;
+                }else{
+                    return null;
+                }
+            }
+        }catch(Exception e){
+            return null;
+        }
+    }
+    
+    public Equipe[] carregarEquipesGrupo(int grupoId) throws SQLException{
+        Equipe[] equipes = new Equipe[4];
+        String sql = "SELECT equipe_id FROM classificacao WHERE grupo_id = ?";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, grupoId);
+            try(ResultSet rs = ps.executeQuery()){
+                int i = 0;
+                while(rs.next()){
+                    Equipe e = this.carregarEquipe(rs.getInt("equipe_id"));
+                    equipes[i] = e;
+                    i++;
+                }
+                return equipes;
+            }
+        }
+    }
+    
     public boolean editarEquipe(int equipeId){
         String sql = "UPDATE equipes SET nome = ? WERE id = ?";
         try(Connection conn = factory.obtemConexao()){
@@ -188,9 +249,9 @@ public class DAO {
                 while (rs.next()){
                     int id = rs.getInt("id");
                     String nome = rs.getString("nome");
-                    equipes[i] = new Equipe();
-                    equipes[i].setId(id);
-                    equipes[i].setNome(nome);
+                    equipes[i] = new Equipe(id, nome);
+                    //equipes[i].setId(id);
+                    //equipes[i].setNome(nome);
                     i += 1;
                 }
                 return equipes;
@@ -200,5 +261,91 @@ public class DAO {
         }
     }
     
-    // consultas de Equipe
+    // requisições Classificacao
+    public Classificacao[] carregarClassificacao(){
+        Classificacao[] cLista = new Classificacao[32];
+        String sql = "SELECT * FROM classificacao";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            try(ResultSet rs = ps.executeQuery()){
+                int i = 0;
+                while (rs.next()){
+                    Classificacao c = new Classificacao();
+                    c.setId(rs.getInt("id"));
+                    c.setEquipe(this.carregarEquipe(rs.getInt("equipe_id")));
+                    c.setGrupo(this.carregarGrupo(rs.getInt("grupo_id")));
+                    c.setPontos(rs.getInt("pontos"));
+                    c.setVitorias(rs.getInt("vitorias"));
+                    c.setEmpates(rs.getInt("empates"));
+                    c.setDerrotas(rs.getInt("derrotas"));
+                    c.setGolsPro(rs.getInt("gols_pro"));
+                    c.setGolsContra(rs.getInt("gols_contra"));
+                    cLista[i] = c;
+                    //equipes[i].setId(id);
+                    //equipes[i].setNome(nome);
+                    i += 1;
+                }
+                return cLista;
+            }
+        }catch(Exception e){
+            return null;
+        }
+    }
+    // requsições de Partida
+    public void salvarPartida(Partida p) throws SQLException{
+        String sql = "INSERT INTO partidas (equipe_a_id, equipe_b_id) VALUES (?, ?)";
+        // tentando conexão com o BD para executar o comando sql
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            // informando a váriavel que irá substituir o ? do comando sql
+            ps.setInt(1, p.getEquipeA().getId());
+            ps.setInt(2, p.getEquipeB().getId());
+            ps.execute();
+        }catch(Exception e){
+        }
+    }
+    
+    public Partida[] carregarPartidas(){
+        String sql = "SELECT * FROM partidas";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    rs.last();
+                    int qtdPartidas = rs.getRow();
+                    Partida[] partidas = new Partida[qtdPartidas];
+                    rs.beforeFirst();
+                    int i = 0;
+                    while(rs.next()){
+//                        System.out.println(rs.getInt("equipe_a"));
+                        Partida p = new Partida(this.carregarEquipe(rs.getInt("equipe_a_id")), this.carregarEquipe(rs.getInt("equipe_b_id")));
+                        p.setId(rs.getInt("id"));
+                        partidas[i] = p;
+                        i++;
+                    }
+                    return partidas;
+                }else{
+                    return null;
+                }
+            }
+        }catch(Exception e){
+            return null;
+        }
+    }
+    
+    // requisições de Resultado
+    public void salvarResultado(Resultado r) throws SQLException{
+        String sql = "INSERT INTO resultados (partida_id, placar_equipe_a, placar_equipe_b) VALUES (?, ?, ?)";
+        // tentando conexão com o BD para executar o comando sql
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            // informando a váriavel que irá substituir o ? do comando sql
+            ps.setInt(1, r.getPartida().getId());
+            ps.setInt(2, r.getPlacarEquipeA());
+            ps.setInt(3, r.getPlacarEquipeB());
+            ps.execute();
+            System.out.println("uai");
+        }catch(Exception e){
+        }
+    }
 }

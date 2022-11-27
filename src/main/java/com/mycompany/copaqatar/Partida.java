@@ -13,8 +13,7 @@ public class Partida {
     private Equipe equipeA;
     private Equipe equipeB;
     // iniciei os placares com -1 para saber que a partida não aconteceu, se não aparece 0
-    private int placarEquipeA = -1;
-    private int placarEquipeB = -1;
+    
     
     public Partida(Equipe equipeA, Equipe equipeB){
         this.equipeA = equipeA;
@@ -28,13 +27,26 @@ public class Partida {
     public void setId(int id){
         this.id = id;
     }
-    
-    public void simularPartida(){
-        this.placarEquipeA = (int)(Math.random() * 4);
-        this.placarEquipeB = (int)(Math.random() * 4);
+
+    public Equipe getEquipeA() {
+        return equipeA;
+    }
+
+    public void setEquipeA(Equipe equipeA) {
+        this.equipeA = equipeA;
+    }
+
+    public Equipe getEquipeB() {
+        return equipeB;
+    }
+
+    public void setEquipeB(Equipe equipeB) {
+        this.equipeB = equipeB;
     }
     
-    public String getPartida(){
-        return this.placarEquipeA + " " + this.equipeA.getNome() + " vs " + this.equipeB.getNome() + " " + this.placarEquipeB;
+    
+    
+    public void getPartida(){
+        // return this.placarEquipeA + " " + this.equipeA.getNome() + " vs " + this.equipeB.getNome() + " " + this.placarEquipeB;
     }
 }

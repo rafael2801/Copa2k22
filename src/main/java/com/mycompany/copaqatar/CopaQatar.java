@@ -18,7 +18,22 @@ public class CopaQatar {
     public static void main(String[] args) throws SQLException {
         DAO dao = new DAO();
         Campeonato c = new Campeonato(1);
-        System.out.println(c.getNome());
+        // c.cadastrarEquipe("Brasil");
+        c.setEquipes();
+        c.setGrupos();
+        c.setClassifificacao();
+        c.setPartidas(dao.carregarPartidas());
+        Resultado r1 = new Resultado(c.getPartidas()[1]);
+        dao.salvarResultado(r1);
+        Resultado r2 = new Resultado(c.getPartidas()[2]);
+        dao.salvarResultado(r2);
+        Resultado r3 = new Resultado(c.getPartidas()[3]);
+        dao.salvarResultado(r3);
+        Resultado r4 = new Resultado(c.getPartidas()[4]);
+        dao.salvarResultado(r4);
+        //c.simularPartidasGrupo();
+        // System.out.println(c.getEquipes()[0].getNome());
+                
         //c.cadastrarEquipesOficiais();
         //c.setGrupos();
         //c.cadastrarGruposOficiais();
