@@ -1,5 +1,8 @@
 package com.mycompany.copaqatar.views;
 
+import com.mycompany.copaqatar.Equipe;
+import com.mycompany.copaqatar.service.GameService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -19,8 +22,10 @@ public class RegisterTeams {
     private JButton usarTimesOficiaisDaButton;
     private JScrollPane teamScroll;
     private JButton cadastrarGruposButton;
+    private JLabel totalTeam;
 
     private List<String> teams = new ArrayList<>();
+    private GameService gameService = new GameService();
 
     public static void main(String[] args) {
         RegisterTeams r = new RegisterTeams();
@@ -55,11 +60,13 @@ public class RegisterTeams {
     public void makeActions() {
         this.adicionarButton.addActionListener(e -> {
             this.verifyQtd();
-            String team = this.textTeam.getText();
-            teams.add(team);
+            String teamName = this.textTeam.getText();
+            teams.add(teamName);
+            gameService.saveTeam(teamName);
             JList<String> list = new JList<>(teams.toArray(new String[0]));
             this.teamScroll.setViewportView(list);
             this.textTeam.setText("");
+            this.totalTeam.setText("Total de times: " + teams.size());
         });
     }
 
@@ -67,7 +74,7 @@ public class RegisterTeams {
         if(teams.size() == 2) {
             JOptionPane.showMessageDialog(null, "Numero maximo de equipes cadastradas!", "Sistema",  JOptionPane.INFORMATION_MESSAGE);
             this.frame.setVisible(false);
-            //new frame
+            //
         }
     }
 

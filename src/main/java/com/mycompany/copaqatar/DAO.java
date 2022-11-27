@@ -136,6 +136,7 @@ public class DAO {
             ps.setString(1, equipe.getNome());
             ps.execute();
         }catch(Exception e){
+            System.out.println("err in create team: " + e);
         }
     }
     public Equipe carregarEquipe(int equipeId) throws SQLException{

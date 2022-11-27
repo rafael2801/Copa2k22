@@ -6,10 +6,10 @@ import java.sql.DriverManager;
 
 public class ConnectionFactory {
     private String usuario = "root";
-    private String senha = "Hungria*8";
+    private String senha = "user_password";
     private String host = "localhost";
     private String porta = "3306";
-    private String bd = "copa_do_mundo";
+    private String bd = "copa";
     
     public Connection obtemConexao (){
         try{
