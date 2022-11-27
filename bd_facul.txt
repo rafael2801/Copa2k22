@@ -2,6 +2,8 @@ CREATE DATABASE copa_do_mundo;
 use copa_do_mundo;
 CREATE TABLE campeonatos(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200), sede VARCHAR(200), ano INT);
 
+INSERT INTO campeonatos (nome, sede, ano) VALUES ("Copa do Mundo", "Qatar", 2022);
+
 CREATE TABLE equipes_oficiais(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
 
 INSERT INTO equipes_oficiais (nome) VALUES ("Qatar");
@@ -52,6 +54,6 @@ INSERT INTO grupos (nome) VALUES ("H");
 
 CREATE TABLE classificacao ( id INT PRIMARY KEY AUTO_INCREMENT, equipe_id INT, FOREIGN KEY (equipe_id) REFERENCES equipes(id), grupo_id INT, FOREIGN KEY (grupo_id) REFERENCES grupos(id), pontos INT, vitorias INT, empates INT, derrotas INT, gols_pro INT, gols_contra INT);
 
-CREATE TABLE partidas(id INT PRIMARY KEY AUTO_INCREMENT, equipe_a_id INT, FOREIGN KEY (equipe_a_id) REFERENCES equipes(id), equipe_b_id INT, FOREIGN KEY (equipe_b_id) REFERENCES equipes(id), placar_equipe_a INT, placar_equipe_b INT);
+CREATE TABLE partidas(id INT PRIMARY KEY AUTO_INCREMENT, equipe_a_id INT, FOREIGN KEY (equipe_a_id) REFERENCES equipes(id), equipe_b_id INT, FOREIGN KEY (equipe_b_id) REFERENCES equipes(id));
 
-CREATE TABLE resultados( partida_id, pla
+CREATE TABLE resultados(id INT PRIMARY KEY AUTO_INCREMENT, partida_id INT, FOREIGN KEY (partida_id) REFERENCES partidas(id), placar_equipe_a INT, placar_equipe_b INT);

@@ -18,7 +18,7 @@ public class Campeonato {
     private Equipe[] equipes = new Equipe[32];
     private Classificacao[] classifificacao = new Classificacao[32];
     private Grupo[] grupos = new Grupo[8];
-    private DAO dao = new DAO();
+    DAO dao = new DAO();
     
     public Campeonato(){
 //        DAO d = new DAO();
@@ -108,8 +108,8 @@ public class Campeonato {
         return strings;
     }
 
-    public void setEquipes(Equipe[] equipes) {
-        this.equipes = equipes;
+    public void setEquipes() {
+        this.equipes = dao.carregarEquipes();
     }
 
     public Grupo[] getGrupos() {
@@ -137,6 +137,34 @@ public class Campeonato {
                 c.setGrupo(g);
                 this.dao.salvarClassificacao(c);
                 e++;
+            }
+        }
+    }
+    
+    public void simularPartidasGrupo() throws SQLException{
+        // um laço de repetição com indíce de 0 a 2 para gerar as três rodadas
+        for(int i = 0; i < 8; i++){
+            Equipe[] e = dao.carregarEquipesGrupo(i);
+            Partida[] partidas = new Partida[6];
+            Resultado[] resultados = new Resultado[6];
+            partidas[0] = new Partida(e[0], e[1]);
+            resultados[0] = new Resultado(partidas[0]);
+            partidas[1] = new Partida(e[2], e[3]);
+            resultados[1] = new Resultado(partidas[1]);
+            partidas[2] = new Partida(e[0], e[2]);
+            resultados[2] = new Resultado(partidas[2]);
+            partidas[3] = new Partida(e[3], e[1]);
+            resultados[3] = new Resultado(partidas[3]);
+            partidas[4] = new Partida(e[3], e[0]);
+            resultados[4] = new Resultado(partidas[4]);
+            partidas[5] = new Partida(e[1], e[2]);
+            resultados[5] = new Resultado(partidas[5]);
+            for(Partida p : partidas){
+                this.dao.salvarPartida(p);
+            }
+            for(Resultado r : resultados){
+                System.out.println(r.getPlacarEquipeA());
+                this.dao.salvarResultado(r);
             }
         }
     }

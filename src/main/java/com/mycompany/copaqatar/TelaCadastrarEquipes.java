@@ -5,6 +5,7 @@
 package com.mycompany.copaqatar;
 
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,10 +13,18 @@ import java.sql.SQLException;
  */
 public class TelaCadastrarEquipes extends javax.swing.JFrame {
 
+    Campeonato c;
     /**
      * Creates new form TelaCadastrarEquipes
      */
-    public TelaCadastrarEquipes() {
+  
+    public TelaCadastrarEquipes(){
+        initComponents();
+
+    }
+    
+    public TelaCadastrarEquipes(Campeonato c) {
+        this.c = c;
         initComponents();
     }
 
@@ -30,8 +39,6 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
 
         nomeTime = new javax.swing.JTextField();
         cadastrarEquipe = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,40 +51,27 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Total de equipes cadastradas");
-
-        jLabel2.setText("jLabel2");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cadastrarEquipe)
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cadastrarEquipe)
-                    .addComponent(nomeTime, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(47, 47, 47))
+                .addComponent(nomeTime, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(nomeTime, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cadastrarEquipe))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))))
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(nomeTime, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cadastrarEquipe)
+                .addContainerGap())
         );
 
         pack();
@@ -86,9 +80,15 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
     private void cadastrarEquipeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEquipeActionPerformed
         String nome = nomeTime.getText();
         try{
-            Equipe e = new Equipe(nome);
-            DAO dao = new DAO();
-            dao.salvarEquipe(e);
+            c.cadastrarEquipe(nome);
+            int x = c.dao.quantidadeEquipesCadastradas();            
+            if(x < 32){
+                nomeTime.setText("");
+                JOptionPane.showMessageDialog(rootPane, "Equipe cadastrada. ".concat(String.valueOf(x).concat("/32.")));
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Equipes cadastradas. ".concat(String.valueOf(x).concat("/32.")));
+                this.dispose();
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -131,8 +131,6 @@ public class TelaCadastrarEquipes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cadastrarEquipe;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField nomeTime;
     // End of variables declaration//GEN-END:variables
 }
