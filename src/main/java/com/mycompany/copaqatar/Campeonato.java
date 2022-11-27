@@ -15,6 +15,7 @@ public class Campeonato {
     private String sede;
     private int ano;
     private Partida[] partidas = new Partida[48];
+    private Resultado[] resultados = new Resultado[48];
     private Equipe[] equipes = new Equipe[32];
     private Classificacao[] classifificacao = new Classificacao[32];
     private Grupo[] grupos = new Grupo[8];
@@ -72,8 +73,8 @@ public class Campeonato {
         return partidas;
     }
 
-    public void setPartidas(Partida[] partidas) {
-        this.partidas = partidas;
+    public void setPartidas() {
+        this.partidas = this.dao.carregarPartidas();
     }
 
     public Equipe[] getEquipes() {
@@ -119,6 +120,14 @@ public class Campeonato {
     public void setGrupos() throws SQLException {
         this.grupos = this.dao.carregarGrupos();
     }
+
+    public Resultado[] getResultados() {
+        return resultados;
+    }
+
+    public void setResultados() {
+        this.resultados = this.dao.carregarResultados();
+    }
   
     public void cadastrarEquipe(String nome) throws SQLException{
         Equipe e = new Equipe(nome);
@@ -141,31 +150,56 @@ public class Campeonato {
         }
     }
     
-    public void simularPartidasGrupo() throws SQLException{
+    public Partida[] cadastrarPartidasGrupo() throws SQLException{
         // um laço de repetição com indíce de 0 a 2 para gerar as três rodadas
+        Partida[] p = new Partida[6];
         for(int i = 0; i < 8; i++){
             Equipe[] e = dao.carregarEquipesGrupo(i);
-            Partida[] partidas = new Partida[6];
-            Resultado[] resultados = new Resultado[6];
-            partidas[0] = new Partida(e[0], e[1]);
-            resultados[0] = new Resultado(partidas[0]);
-            partidas[1] = new Partida(e[2], e[3]);
-            resultados[1] = new Resultado(partidas[1]);
-            partidas[2] = new Partida(e[0], e[2]);
-            resultados[2] = new Resultado(partidas[2]);
-            partidas[3] = new Partida(e[3], e[1]);
-            resultados[3] = new Resultado(partidas[3]);
-            partidas[4] = new Partida(e[3], e[0]);
-            resultados[4] = new Resultado(partidas[4]);
-            partidas[5] = new Partida(e[1], e[2]);
-            resultados[5] = new Resultado(partidas[5]);
-            for(Partida p : partidas){
-                this.dao.salvarPartida(p);
-            }
-            for(Resultado r : resultados){
-                System.out.println(r.getPlacarEquipeA());
-                this.dao.salvarResultado(r);
-            }
+            //Resultado[] resultados = new Resultado[6];
+            p[0] = new Partida(e[0], e[1]);
+            this.dao.salvarPartida(p[0]);
+            //resultados[0] = new Resultado(partidas[0]);
+            //this.dao.salvarResultado(resultados[0]);
+            p[1] = new Partida(e[2], e[3]);
+            this.dao.salvarPartida(p[1]);
+            //resultados[1] = new Resultado(partidas[1]);
+            p[2] = new Partida(e[0], e[2]);
+            this.dao.salvarPartida(p[2]);
+            //resultados[2] = new Resultado(partidas[2]);
+            //this.dao.salvarResultado(resultados[2]);
+            p[3] = new Partida(e[3], e[1]);
+            this.dao.salvarPartida(p[3]);
+            //resultados[3] = new Resultado(partidas[3]);
+            //this.dao.salvarResultado(resultados[3]);
+            p[4] = new Partida(e[3], e[0]);
+            this.dao.salvarPartida(p[4]);
+            //resultados[4] = new Resultado(partidas[4]);
+            //this.dao.salvarResultado(resultados[4]);
+            p[5] = new Partida(e[1], e[2]);
+            this.dao.salvarPartida(p[5]);
+            //resultados[5] = new Resultado(partidas[5]);
+            //this.dao.salvarResultado(resultados[5]);
         }
+        return this.partidas = p;
+    }
+    public Resultado[] simularResultadosGrupo() throws SQLException{
+        // um laço de repetição com indíce de 0 a 2 para gerar as três rodadas
+        Resultado[] r = new Resultado[6];
+        for(int i = 0; i < 8; i++){
+            // Equipe[] e = dao.carregarEquipesGrupo(i);
+            r[0] = new Resultado(this.partidas[0]);
+            this.dao.salvarResultado(r[0]);
+            r[1] = new Resultado(this.partidas[1]);
+            this.dao.salvarResultado(r[1]);
+            r[2] = new Resultado(this.partidas[2]);
+            this.dao.salvarResultado(r[2]);
+            r[3] = new Resultado(this.partidas[3]);
+            this.dao.salvarResultado(r[3]);
+            r[4] = new Resultado(this.partidas[4]);
+            this.dao.salvarResultado(r[4]);
+            r[5] = new Resultado(this.partidas[5]);
+            this.dao.salvarResultado(r[5]);
+        }
+        return this.resultados = r;
     }
 }

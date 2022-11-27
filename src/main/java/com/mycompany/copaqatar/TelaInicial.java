@@ -63,7 +63,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Cadastrar Grupos automático");
+        jButton3.setText("Cadastrar Grupos Automático");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -77,7 +77,7 @@ public class TelaInicial extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(268, 268, 268)
                 .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -91,7 +91,7 @@ public class TelaInicial extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(195, 195, 195)
                                 .addComponent(jButton1)))
-                        .addGap(0, 213, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -154,8 +154,9 @@ public class TelaInicial extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.c.setEquipes();
         try {
-        this.c.setGrupos();
+            this.c.setGrupos();
             this.c.cadastrarGruposOficiais();
+            this.c.cadastrarPartidasGrupo();
         } catch (SQLException ex) {
             Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
         }

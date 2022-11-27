@@ -9,6 +9,7 @@ package com.mycompany.copaqatar;
  * @author supor
  */
 public class Resultado {
+    private int id;
     private Partida partida;
     private int placarEquipeA = -1;
     private int placarEquipeB = -1;
@@ -17,6 +18,21 @@ public class Resultado {
         this.partida = p;
         this.placarEquipeA = (int)(Math.random() * 4);
         this.placarEquipeB = (int)(Math.random() * 4);
+    }
+    
+    public Resultado(int id, Partida p, int placarEquipeA, int placarEquipeB){
+        this.setId(id);
+        this.setPartida(p);
+        this.setPlacarEquipeA(placarEquipeA);
+        this.setPlacarEquipeB(placarEquipeB);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Partida getPartida() {
