@@ -306,6 +306,26 @@ public class DAO {
         }
     }
     
+    public Partida carregarPartida(int partidaId){
+        String sql = "SELECT * FROM partidas WHERE id = ?";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, partidaId);
+            try(ResultSet rs = ps.executeQuery()){
+                //System.out.print(rs.getString("nome"));
+                while(rs.next()){
+                    Partida p = new Partida(rs.getInt("id"), this.carregarEquipe(rs.getInt("equipe_a_id")), this.carregarEquipe(rs.getInt("equipe_id_b")));
+//                    e.setId(rs.getInt("id"));
+//                    e.setNome(rs.getString("nome"));
+                    return p;
+                }
+            }
+        }catch(Exception e){
+            // return false;
+        }
+        return null;
+    }
+    
     public Partida[] carregarPartidas(){
         String sql = "SELECT * FROM partidas";
         try(Connection conn = factory.obtemConexao()){
@@ -347,6 +367,33 @@ public class DAO {
             ps.execute();
             System.out.println("uai");
         }catch(Exception e){
+        }
+    }
+    
+    public Resultado[] carregarResultados(){
+        String sql = "SELECT * FROM resultados";
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
+                    rs.last();
+                    int qtdResultados = rs.getRow();
+                    Resultado[] resultados = new Resultado[qtdResultados];
+                    rs.beforeFirst();
+                    int i = 0;
+                    while(rs.next()){
+//                        System.out.println(rs.getInt("equipe_a"));
+                        Resultado r = new Resultado(rs.getInt("id"), this.carregarPartida(rs.getInt("partida_id")), rs.getInt("placar_equipe_a"), rs.getInt("placar_equipe_b"));
+                        resultados[i] = r;
+                        i++;
+                    }
+                    return resultados;
+                }else{
+                    return null;
+                }
+            }
+        }catch(Exception e){
+            return null;
         }
     }
 }

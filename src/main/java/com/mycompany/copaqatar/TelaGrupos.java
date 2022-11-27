@@ -547,7 +547,9 @@ public class TelaGrupos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            c.simularPartidasGrupo();
+            // c.cadastrarPartidasGrupo();
+            c.setPartidas();
+            c.simularResultadosGrupo();
         } catch (SQLException ex) {
             Logger.getLogger(TelaGrupos.class.getName()).log(Level.SEVERE, null, ex);
         }

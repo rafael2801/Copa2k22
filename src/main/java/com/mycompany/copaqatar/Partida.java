@@ -20,6 +20,12 @@ public class Partida {
         this.equipeB = equipeB;
     }
     
+    public Partida(int id, Equipe equipeA, Equipe equipeB){
+        this.id = id;
+        this.equipeA = equipeA;
+        this.equipeB = equipeB;
+    }
+    
     public int getId() {
         return id;
     }
