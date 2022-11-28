@@ -1,6 +1,7 @@
 package com.mycompany.copaqatar;
 
 import com.mycompany.copaqatar.models.User;
+import com.mycompany.copaqatar.service.GameService;
 import com.mycompany.copaqatar.views.Home;
 import com.mycompany.copaqatar.views.Login;
 
@@ -12,6 +13,7 @@ public class Main {
         User user = new User();
         Login loginView = new Login(user);
         loginView.makeFrame();
+//        new GameService().setOficialTeams();
 //        new Home();
 
     }

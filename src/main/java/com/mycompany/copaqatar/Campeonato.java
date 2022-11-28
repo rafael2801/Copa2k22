@@ -116,11 +116,11 @@ public class Campeonato {
         return grupos;
     }
 
-    public void setGrupos() throws SQLException {
+    public void setGrupos()  {
         this.grupos = this.dao.carregarGrupos();
     }
     public Resultado[] getResultados() {
-        return resultados;
+        return this.resultados;
     }
 
     public void setResultados() {
@@ -134,24 +134,31 @@ public class Campeonato {
     public Equipe[] cadastrarEquipesOficiais() throws SQLException{
         return this.equipes = this.dao.carregarEquipesOficiais();
     }
-    public void cadastrarGruposOficiais() throws SQLException{
+    public void cadastrarGruposOficiais() {
         int e = 0;
-        for(Grupo g : this.grupos){
-            for(int i = 0; i < 4; i++){
-                Classificacao c = new Classificacao();
-                c.setEquipe(this.equipes[e]);
-                c.setGrupo(g);
-                this.dao.salvarClassificacao(c);
-                e++;
+        try {
+            for(Grupo g : this.grupos){
+                for(int i = 0; i < 4; i++){
+                    Classificacao c = new Classificacao();
+                    c.setEquipe(this.equipes[e]);
+                    c.setGrupo(g);
+                    this.dao.salvarClassificacao(c);
+                    e++;
+                }
             }
+        } catch (SQLException ex) {
+            System.out.println("err on save classification: " + ex);
         }
+
     }
     
     public Partida[] cadastrarPartidasGrupo() throws SQLException{
         // um laço de repetição com indíce de 0 a 2 para gerar as três rodadas
         Partida[] p = new Partida[6];
-        for(int i = 0; i < 8; i++){
+        for(int i = 1; i < 8; i++){
             Equipe[] e = dao.carregarEquipesGrupo(i);
+            System.out.println("========== " + e.length);
+            System.out.println("========== " + e[0].getNome() + " ==== " + e[1].getNome());
             //Resultado[] resultados = new Resultado[6];
             p[0] = new Partida(e[0], e[1]);
             this.dao.salvarPartida(p[0]);
@@ -179,9 +186,10 @@ public class Campeonato {
         }
         return this.partidas = p;
     }
-    public Resultado[] simularResultadosGrupo() throws SQLException{
+    public Resultado[] simularResultadosGrupo() throws SQLException {
         // um laço de repetição com indíce de 0 a 2 para gerar as três rodadas
         Resultado[] r = new Resultado[6];
+
         for(int i = 0; i < 8; i++){
             // Equipe[] e = dao.carregarEquipesGrupo(i);
             r[0] = new Resultado(this.partidas[0]);

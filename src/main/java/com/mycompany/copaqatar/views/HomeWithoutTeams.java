@@ -1,5 +1,7 @@
 package com.mycompany.copaqatar.views;
 
+import com.mycompany.copaqatar.models.User;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,15 +12,16 @@ public class HomeWithoutTeams {
 
     private  JFrame frame;
 
+    User user;
+
     private final Color mainColor = new Color(105, 4, 34);
 
 
-    public static void main(String[] args) {
-        HomeWithoutTeams h = new HomeWithoutTeams();
-        h.makeFrame();
+    public HomeWithoutTeams (User user) {
+        this.user = user;
     }
 
-    private void makeFrame () {
+    public void makeFrame () {
         frame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -37,6 +40,14 @@ public class HomeWithoutTeams {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.fixComponents();
+        this.makeActions();
+    }
+
+    private void makeActions () {
+        this.btn_register_teams.addActionListener(evt -> {
+            this.frame.setVisible(false);
+            new RegisterTeams().makeFrame();
+        });
     }
 
     private void fixComponents () {
@@ -45,5 +56,9 @@ public class HomeWithoutTeams {
 
         this.btn_register_teams.setBackground(mainColor);
         this.btn_register_teams.setOpaque(true);
+
+        if(user.getSuper().equals(false)) {
+            this.btn_register_teams.setVisible(false);
+        }
     }
 }

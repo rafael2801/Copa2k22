@@ -26,7 +26,7 @@ public class RegisterGroup {
         r.makeFrame();
     }
 
-    private void makeFrame () {
+    public void makeFrame () {
         frame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 

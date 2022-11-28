@@ -32,7 +32,7 @@ public class CopaQatar {
         //dao.salvarResultado(r3);
         //Resultado r4 = new Resultado(c.getPartidas()[4]);
         //dao.salvarResultado(r4);
-        c.simularPartidasGrupo();
+//        c.simularPartidasGrupo();
         // System.out.println(c.getEquipes()[0].getNome());
                 
         //c.cadastrarEquipesOficiais();

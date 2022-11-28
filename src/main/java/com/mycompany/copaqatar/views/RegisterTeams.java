@@ -1,6 +1,6 @@
 package com.mycompany.copaqatar.views;
 
-import com.mycompany.copaqatar.Equipe;
+import com.mycompany.copaqatar.models.User;
 import com.mycompany.copaqatar.service.GameService;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class RegisterTeams {
     private JPanel content;
     private JTextField textTeam;
     private JButton adicionarButton;
-    private JButton usarTimesOficiaisDaButton;
+    private JButton btn_set_teams;
     private JScrollPane teamScroll;
     private JButton cadastrarGruposButton;
     private JLabel totalTeam;
@@ -32,7 +32,7 @@ public class RegisterTeams {
         r.makeFrame();
     }
 
-    private void makeFrame () {
+    public void makeFrame () {
         frame = new JFrame();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -68,13 +68,23 @@ public class RegisterTeams {
             this.textTeam.setText("");
             this.totalTeam.setText("Total de times: " + teams.size());
         });
+
+        this.btn_set_teams.addActionListener(evt -> {
+            gameService.setOficialTeams();
+            this.frame.setVisible(false);
+            User user = new User();
+            user.setSuper(true);
+            new Home(user).makeFrame();
+        });
+
     }
 
     private void verifyQtd () {
         if(teams.size() == 2) {
             JOptionPane.showMessageDialog(null, "Numero maximo de equipes cadastradas!", "Sistema",  JOptionPane.INFORMATION_MESSAGE);
             this.frame.setVisible(false);
-            //
+            this.distribuiteInGroups();
+            new Home().makeFrame();
         }
     }
 
@@ -96,5 +106,12 @@ public class RegisterTeams {
 
             }
         };
+    }
+
+    public void distribuiteInGroups () {
+
+        gameService.sortGroups();
+        this.frame.setVisible(false);
+        new Home().makeFrame();
     }
 }

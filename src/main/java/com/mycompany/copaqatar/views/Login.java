@@ -1,5 +1,6 @@
 package com.mycompany.copaqatar.views;
 
+import com.mycompany.copaqatar.ConnectionFactory;
 import com.mycompany.copaqatar.database.DatabaseConnection;
 import com.mycompany.copaqatar.models.User;
 import com.mycompany.copaqatar.service.AuthService;
@@ -23,30 +24,24 @@ public class Login {
         this.entrarButton.addActionListener(e -> {
             String email = this.inputEmail.getText();
             String password = this.inputPassword.getText();
-            System.out.println(email + " === " + password);
 
-            DatabaseConnection connection = DatabaseConnection.getInstance();
-            try {
-                AuthService userService = new AuthService(connection.getConnection());
-                User userSigned = userService.signIn(email, password);
-                user.setLogged(userSigned.getLogged());
-                user.setSuper(userSigned.getLogged());
-                user.setUser_name(userSigned.getUser_name());
+            ConnectionFactory connection = new ConnectionFactory();
+            AuthService userService = new AuthService(connection.obtemConexao());
+            User userSigned = userService.signIn(email, password);
+            user.setLogged(userSigned.getLogged());
+            user.setSuper(userSigned.getSuper());
+            user.setUser_name(userSigned.getUser_name());
 
-                if(user.getLogged()) {
-                    this.frame.setVisible(false);
-//                    new Home();
+            if(user.getLogged()) {
+                this.frame.setVisible(false);
+                if(userService.hasTeams()) {
+                    new Home(user).makeFrame();
+                } else {
+                    new HomeWithoutTeams(user).makeFrame();
                 }
 
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
             }
+
         });
     }
 
@@ -68,34 +63,6 @@ public class Login {
         int y = (screenSize.height - frame.getHeight()) / 2;
         frame.setLocation(x, y);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    public void closeFrame () {
-        this.frame.setVisible(false);
-    }
-
-    private ActionListener signIn () {
-
-        ActionListener listener = e -> {
-            String email = this.eMailTextField.getText();
-            String password = this.passwordField1.getText();
-
-            DatabaseConnection connection = DatabaseConnection.getInstance();
-            try {
-                AuthService userService = new AuthService(connection.getConnection());
-                userService.signIn(email, password);
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException(ex);
-            } catch (InstantiationException ex) {
-                throw new RuntimeException(ex);
-            } catch (IllegalAccessException ex) {
-                throw new RuntimeException(ex);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-        };
-
-        return listener;
     }
 
 }

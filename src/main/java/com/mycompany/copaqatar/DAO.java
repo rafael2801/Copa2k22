@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -67,6 +65,7 @@ public class DAO {
     }
     
     public Grupo[] carregarGrupos(){
+
         Grupo[] grupos = new Grupo[8];
         String sql = "SELECT * FROM grupos";
         try(Connection conn = factory.obtemConexao()){
@@ -74,6 +73,7 @@ public class DAO {
             try(ResultSet rs = ps.executeQuery()){
                 int i = 0;
                 while (rs.next()){
+                    if(i == 8) continue;
                     int id = rs.getInt("id");
                     String nome = rs.getString("nome");
                     grupos[i] = new Grupo();
@@ -84,12 +84,57 @@ public class DAO {
                 return grupos;
             }
         }catch(Exception e){
+            System.out.println("Err on get groups: " + e);
             return null;
+        }
+    }
+
+    public void createGroups () {
+        System.out.println("23");
+        String sql = "CREATE TABLE IF NOT EXISTS grupos (id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));";
+        String sql1 = "INSERT INTO grupos (nome) VALUES (\"A\");";
+        String sql2 = "INSERT INTO grupos (nome) VALUES (\"B\");";
+        String sql3 = "INSERT INTO grupos (nome) VALUES (\"C\");";
+        String sql4 = "INSERT INTO grupos (nome) VALUES (\"D\");";
+        String sql5 = "INSERT INTO grupos (nome) VALUES (\"E\");";
+        String sql6 = "INSERT INTO grupos (nome) VALUES (\"F\");";
+        String sql7 = "INSERT INTO grupos (nome) VALUES (\"G\");";
+        String sql8 = "INSERT INTO grupos (nome) VALUES (\"H\");";
+
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps1 = conn.prepareStatement(sql1);
+            PreparedStatement ps2 = conn.prepareStatement(sql2);
+            PreparedStatement ps3 = conn.prepareStatement(sql3);
+            PreparedStatement ps4 = conn.prepareStatement(sql4);
+            PreparedStatement ps5 = conn.prepareStatement(sql5);
+            PreparedStatement ps6 = conn.prepareStatement(sql6);
+            PreparedStatement ps7 = conn.prepareStatement(sql7);
+            PreparedStatement ps8 = conn.prepareStatement(sql8);
+
+            try {
+                int rs = ps.executeUpdate();
+                int rs1 = ps1.executeUpdate();
+                int rs2 = ps2.executeUpdate();
+                int rs3 = ps3.executeUpdate();
+                int rs4 = ps4.executeUpdate();
+                int rs5 = ps5.executeUpdate();
+                int rs6 = ps6.executeUpdate();
+                int rs7 = ps7.executeUpdate();
+                int rs8 = ps8.executeUpdate();
+
+            } catch (SQLException e) {
+                System.out.println("err on create groups: 2445455 " + e);
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create groups: " + e);
         }
     }
     
     // requisições de Classificacao
     public void salvarClassificacao(Classificacao c) throws SQLException{
+        this.setupClassification();
         String sql = "INSERT INTO classificacao (equipe_id, grupo_id, pontos, vitorias, empates, derrotas, gols_pro, gols_contra) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try(Connection conn = factory.obtemConexao()){
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -102,6 +147,38 @@ public class DAO {
             ps.setInt(7, c.getGolsPro());
             ps.setInt(8, c.getGolsContra());
             ps.execute();
+        }
+    }
+
+    public void setupClassification () {
+        String sql = "CREATE TABLE IF NOT EXISTS classificacao ( id INT PRIMARY KEY AUTO_INCREMENT, equipe_id INT, FOREIGN KEY (equipe_id) REFERENCES equipes(id), grupo_id INT, FOREIGN KEY (grupo_id) REFERENCES grupos(id), pontos INT, vitorias INT, empates INT, derrotas INT, gols_pro INT, gols_contra INT);";
+
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            try {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create classification: " + e);
+        }
+    }
+
+    public void setupGames () {
+        String sql = "CREATE TABLE IF NOT EXISTS partidas(id INT PRIMARY KEY AUTO_INCREMENT, equipe_a_id INT, FOREIGN KEY (equipe_a_id) REFERENCES equipes(id), equipe_b_id INT, FOREIGN KEY (equipe_b_id) REFERENCES equipes(id));";
+
+        try(Connection conn = factory.obtemConexao()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            try {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create classification: " + e);
         }
     }
     
@@ -128,6 +205,7 @@ public class DAO {
     
     // requisições de Equipe
     public void salvarEquipe(Equipe equipe) throws SQLException{
+        this.setupTeams();
         String sql = "INSERT INTO equipes (nome) VALUES (?)";
         // tentando conexão com o BD para executar o comando sql
         try(Connection conn = factory.obtemConexao()){
@@ -154,12 +232,14 @@ public class DAO {
                 }
             }
         }catch(Exception e){
+            System.out.println("err on load team: " + e);
             // return false;
         }
         return null;
     }
     
     public int quantidadeEquipesCadastradas() throws SQLException{
+        this.setupTeams();
         String sql = "SELECT * FROM equipes";
         try(Connection conn = factory.obtemConexao()){
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -177,6 +257,7 @@ public class DAO {
     }
     
     public Equipe[] carregarEquipes(){
+        this.setupTeams();
         String sql = "SELECT * FROM equipes";
         try(Connection conn = factory.obtemConexao()){
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -197,6 +278,7 @@ public class DAO {
                 }
             }
         }catch(Exception e){
+            System.out.println("err itn sla 123: " + e);
             return null;
         }
     }
@@ -210,6 +292,7 @@ public class DAO {
             try(ResultSet rs = ps.executeQuery()){
                 int i = 0;
                 while(rs.next()){
+                    if (i == 4) continue;
                     Equipe e = this.carregarEquipe(rs.getInt("equipe_id"));
                     equipes[i] = e;
                     i++;
@@ -294,6 +377,7 @@ public class DAO {
     }
     // requsições de Partida
     public void salvarPartida(Partida p) throws SQLException{
+        this.setupGames();
         String sql = "INSERT INTO partidas (equipe_a_id, equipe_b_id) VALUES (?, ?)";
         // tentando conexão com o BD para executar o comando sql
         try(Connection conn = factory.obtemConexao()){
@@ -303,6 +387,7 @@ public class DAO {
             ps.setInt(2, p.getEquipeB().getId());
             ps.execute();
         }catch(Exception e){
+            System.out.println("Err on save game 1234: " + e);
         }
     }
     
@@ -314,19 +399,22 @@ public class DAO {
             try(ResultSet rs = ps.executeQuery()){
                 //System.out.print(rs.getString("nome"));
                 while(rs.next()){
-                    Partida p = new Partida(rs.getInt("id"), this.carregarEquipe(rs.getInt("equipe_a_id")), this.carregarEquipe(rs.getInt("equipe_id_b")));
+
+                    Partida p = new Partida(rs.getInt("id"), this.carregarEquipe(rs.getInt("equipe_a_id")), this.carregarEquipe(rs.getInt("equipe_b_id")));
 //                    e.setId(rs.getInt("id"));
 //                    e.setNome(rs.getString("nome"));
                     return p;
                 }
             }
         }catch(Exception e){
+            System.out.println(" err in load game 22222:: " + e);
             // return false;
         }
         return null;
     }
     
     public Partida[] carregarPartidas(){
+        this.setupGames();
         String sql = "SELECT * FROM partidas";
         try(Connection conn = factory.obtemConexao()){
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -338,7 +426,6 @@ public class DAO {
                     rs.beforeFirst();
                     int i = 0;
                     while(rs.next()){
-//                        System.out.println(rs.getInt("equipe_a"));
                         Partida p = new Partida(this.carregarEquipe(rs.getInt("equipe_a_id")), this.carregarEquipe(rs.getInt("equipe_b_id")));
                         p.setId(rs.getInt("id"));
                         partidas[i] = p;
@@ -350,12 +437,14 @@ public class DAO {
                 }
             }
         }catch(Exception e){
+            System.out.println("Err on load game: " + e);
             return null;
         }
     }
     
     // requisições de Resultado
     public void salvarResultado(Resultado r) throws SQLException{
+        this.setupResults();
         String sql = "INSERT INTO resultados (partida_id, placar_equipe_a, placar_equipe_b) VALUES (?, ?, ?)";
         // tentando conexão com o BD para executar o comando sql
         try(Connection conn = factory.obtemConexao()){
@@ -365,8 +454,8 @@ public class DAO {
             ps.setInt(2, r.getPlacarEquipeA());
             ps.setInt(3, r.getPlacarEquipeB());
             ps.execute();
-            System.out.println("uai");
         }catch(Exception e){
+            System.out.println("Err in save result game: " + e);
         }
     }
     
@@ -393,7 +482,134 @@ public class DAO {
                 }
             }
         }catch(Exception e){
+            System.out.println("err on load result 123: " + e);
             return null;
+        }
+    }
+
+    public void setOficialTeams () {
+        String[] mockTeams = {
+                "Qatar",
+                "Equador",
+                "Senegal",
+                "Holanda",
+                "Inglaterra",
+                "Irã",
+                "Estados Unidos",
+                "País de Gales",
+                "Argentina",
+                "Arábia Saudita",
+                "México",
+                "Polônia",
+                "França",
+                "Austrália",
+                "Dinamarca",
+                "Tunísia",
+                "Espanha",
+                "Costa Rica",
+                "Alemanha",
+                "Japão",
+                "Bélgica",
+                "Canada",
+                "Marrocos",
+                "Croácia",
+                "Brasil",
+                "Sérvia",
+                "Suiça",
+                "Camarões",
+                "Portugal",
+                "Gana",
+                "Uruguai",
+                "Coréia do Sul"
+        };
+
+//        String sqlDropTable = " drop table equipes;";
+
+
+
+        String sql = "CREATE TABLE IF NOT EXISTS equipes (id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));";
+
+        try(Connection conn = factory.obtemConexao()){
+            try {
+//                PreparedStatement psDrop = conn.prepareStatement(sqlDropTable);
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+//                psDrop.execute();
+                ps.execute();
+
+                String baseSqlTeam = "INSERT INTO equipes (nome) VALUES ";
+                String sqlTeam = "";
+
+
+                for (String team : mockTeams) {
+                    sqlTeam = "('" + team + "')";
+                    PreparedStatement psTeam = conn.prepareStatement(baseSqlTeam + sqlTeam);
+                    int updated = psTeam.executeUpdate();
+
+                }
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create teams: " + e);
+        }
+
+    }
+
+    public void setupTeams () {
+        String sql = "CREATE TABLE IF NOT EXISTS equipes (id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));";
+
+        try(Connection conn = factory.obtemConexao()){
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.execute();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create table teams: " + e);
+        }
+
+    }
+
+    public void deleteAll () {
+        String sql = "drop table classificacao";
+        String sql1 = "drop table equipes";
+        String sql2 = "drop table grupos";
+
+        try(Connection conn = factory.obtemConexao()){
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                PreparedStatement ps1 = conn.prepareStatement(sql1);
+                PreparedStatement ps2 = conn.prepareStatement(sql2);
+
+                ps.execute();
+                ps1.execute();
+                ps2.execute();
+
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on delete all " + e);
+        }
+    }
+
+    public void setupResults () {
+        String sql = "CREATE TABLE IF NOT EXISTS resultados (id INT PRIMARY KEY AUTO_INCREMENT, partida_id INT, FOREIGN KEY (partida_id) REFERENCES partidas(id), placar_equipe_a INT, placar_equipe_b INT);";
+
+        try(Connection conn = factory.obtemConexao()){
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.execute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create resultados table " + e);
         }
     }
 }

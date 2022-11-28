@@ -1,6 +1,7 @@
 package com.mycompany.copaqatar.views;
 
 import com.mycompany.copaqatar.models.User;
+import com.mycompany.copaqatar.service.GameService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,9 @@ public class Home {
     private JScrollPane groupScroll;
 
     private  JFrame frame;
+
+    private User user;
+    GameService gameService = new GameService();
 
     private final String[] mockTeams = {
             "Qatar",
@@ -63,26 +67,16 @@ public class Home {
     private final Color mainColor = new Color(105, 4, 34);
 
 
+    public Home (User user) {
+        this.user = user;
+    }
+
+    public Home () {
+    }
+
     public static void main(String[] args) {
         Home home = new Home();
         home.makeFrame();
-
-//        JPanel panel = new JPanel(new BorderLayout());
-//        List<String> myList = new ArrayList<>(10);
-//        for (int index = 0; index < 20; index++) {
-//            myList.add("List Item " + index);
-//        }
-//        final JList<String> list = new JList<String>(myList.toArray(new String[myList.size()]));
-//        JScrollPane scrollPane = new JScrollPane();
-//        scrollPane.setViewportView(list);
-//        list.setLayoutOrientation(JList.VERTICAL);
-//        panel.add(scrollPane);
-//        JFrame frame = new JFrame("Demo");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.add(panel);
-//        frame.setSize(500, 250);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
     }
 
     public void makeFrame () {
@@ -110,22 +104,39 @@ public class Home {
     }
 
     public void makeActions() {
+
+        this.btn_delete_all.addActionListener(evt -> {
+            gameService.deleteAll();
+            String[] listOfNull = {};
+            this.groupList.setListData(listOfNull);
+
+            this.teamList.setListData(listOfNull);
+        });
+
+        this.btn_simulate.addActionListener(evt -> {
+            gameService.play();
+            new GameResult().makeFrame();
+        });
+
+        this.btn_logout.addMouseListener(this.clickListener());
     }
 
     private void populateComponents () {
 
         this.btn_simulate.setBackground(mainColor);
         this.btn_simulate.setOpaque(true);
-        String[] countries = {"Grupo A", "Grupo B", "Grupo C", "Grupo D", "Grupo E", "Grupo F", "Grupo G", "Grupo H"};
+
+        String[] teams = gameService.getTeams();
+        String[] countries = gameService.getGroups();
+
         this.groupList.setListData(countries);
-        this.teamList.setListData(mockTeams);
+
+        this.teamList.setListData(teams);
 
     }
 
     private void fixComponents () {
-//        JScrollPane scrollPane = new JScrollPane();
-//        scrollPane.setViewportView(list);
-//        list.setLayoutOrientation(JList.VERTICAL);
+
         //lista de grupos
         this.groupList.setFixedCellWidth(50);
         this.groupList.setFixedCellHeight(50);
@@ -134,17 +145,24 @@ public class Home {
         this.teamList.setFixedCellWidth(50);
         this.teamList.setFixedCellHeight(20);
 
+
+        if(this.user != null && this.user.getSuper()) {
+        } else {
+            this.btn_simulate.setVisible(false);
+            this.btn_delete_all.setVisible(false);
+        }
+
     }
 
     private MouseAdapter clickListener () {
+        JFrame frame = this.frame;
         return new MouseAdapter()
         {
             public void mouseClicked(MouseEvent e)
             {
                 // you can open a new frame here as
                 // i have assumed you have declared "frame" as instance variable
-                frame = new JFrame("new frame");
-                frame.setVisible(true);
+                frame.setVisible(false);
 
             }
         };

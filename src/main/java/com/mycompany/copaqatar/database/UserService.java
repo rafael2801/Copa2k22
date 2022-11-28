@@ -2,10 +2,7 @@ package com.mycompany.copaqatar.database;
 
 import com.mycompany.copaqatar.models.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserService {
 
@@ -16,6 +13,7 @@ public class UserService {
     }
 
     public User signIn (String email, String password) {
+        this.setupAuth();
         User user = new User();
         user.setLogged(false);
 
@@ -40,6 +38,30 @@ public class UserService {
         } catch (Exception e) {
             System.out.println("err in sigin, err: " + e);
             return user ;
+        }
+
+    }
+
+    public void setupAuth () {
+        String sql = "CREATE TABLE IF NOT EXISTS user (\n" +
+                "\tid int primary key not null auto_increment,\n" +
+                "    user_name VARCHAR(100) not null,\n" +
+                "    email VARCHAR(150) not null,\n" +
+                "    user_password VARCHAR(150) not null,\n" +
+                "    is_super boolean not null\n" +
+                " )";
+
+        try {
+            try {
+                PreparedStatement ps = connection.prepareStatement(sql);
+
+                ps.execute();
+
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on delete all " + e);
         }
 
     }

@@ -41,7 +41,7 @@ INSERT INTO equipes_oficiais (nome) VALUES ("Coréia do Sul");
 
 CREATE TABLE equipes(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
 
-CREATE TABLE grupos(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
+CREATE TABLE grupos if not exists(id INT PRIMARY KEY AUTO_INCREMENT, nome VARCHAR(200));
 
 INSERT INTO grupos (nome) VALUES ("A");
 INSERT INTO grupos (nome) VALUES ("B");
