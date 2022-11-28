@@ -80,7 +80,7 @@ public class RegisterTeams {
     }
 
     private void verifyQtd () {
-        if(teams.size() == 2) {
+        if(teams.size() == 32) {
             JOptionPane.showMessageDialog(null, "Numero maximo de equipes cadastradas!", "Sistema",  JOptionPane.INFORMATION_MESSAGE);
             this.frame.setVisible(false);
             this.distribuiteInGroups();

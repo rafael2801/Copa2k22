@@ -111,6 +111,9 @@ public class Home {
             this.groupList.setListData(listOfNull);
 
             this.teamList.setListData(listOfNull);
+
+            this.frame.setVisible(false);
+            new Home().makeFrame();
         });
 
         this.btn_simulate.addActionListener(evt -> {
@@ -144,12 +147,12 @@ public class Home {
         //lista de times
         this.teamList.setFixedCellWidth(50);
         this.teamList.setFixedCellHeight(20);
+        this.btn_delete_all.setVisible(false);
 
 
         if(this.user != null && this.user.getSuper()) {
         } else {
             this.btn_simulate.setVisible(false);
-            this.btn_delete_all.setVisible(false);
         }
 
     }
