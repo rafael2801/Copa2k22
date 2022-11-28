@@ -7,46 +7,17 @@ import com.mycompany.copaqatar.service.AuthService;
 import javax.swing.*;
 import java.awt.*;
 
-public class Login {
-    private JTextField eMailTextField;
-    private JButton entrarButton;
+public class SignUp {
     private JPanel container;
-    private JTextField inputEmail;
-    private JTextField inputPassword;
-    private JPasswordField passwordField1;
-
-    private  JFrame frame;
+    private JTextField nameField;
     private JTextField emailField;
     private JPasswordField passwordField;
     private JButton cadastrarButton;
-
+    JFrame frame;
     private final Color mainColor = new Color(105, 4, 34);
 
-    public Login(User user) {
-        this.entrarButton.addActionListener(e -> {
-            String email = this.emailField.getText();
-            char[] pf = this.passwordField.getPassword();
-            String password = new String(pf);
-
-            ConnectionFactory connection = new ConnectionFactory();
-            AuthService userService = new AuthService(connection.obtemConexao());
-            User userSigned = userService.signIn(email, password);
-            user.setLogged(userSigned.getLogged());
-            user.setSuper(userSigned.getSuper());
-            user.setUser_name(userSigned.getUser_name());
-
-            if(user.getLogged()) {
-                this.frame.setVisible(false);
-                if(userService.hasTeams()) {
-                    new Home(user).makeFrame();
-                } else {
-                    new HomeWithoutTeams(user).makeFrame();
-                }
-
-            }
-
-        });
-    }
+    ConnectionFactory connectionFactory = new ConnectionFactory();
+    private AuthService authService = new AuthService(connectionFactory.obtemConexao());
 
     public void makeFrame () {
 
@@ -68,13 +39,17 @@ public class Login {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.cadastrarButton.setBackground(mainColor);
-        this.entrarButton.setBackground(mainColor);
 
         this.cadastrarButton.addActionListener(evt -> {
+            String name = this.nameField.getText();
+            String email = this.emailField.getText();
+            char[] pf = this.passwordField.getPassword();
+
+            String password = new String(pf);
+            authService.signUp(name, email, password);
+
             this.frame.setVisible(false);
-            new SignUp().makeFrame();
+            new Login(new User()).makeFrame();
         });
     }
-
 }
-

@@ -612,4 +612,30 @@ public class DAO {
             System.out.println("err on create resultados table " + e);
         }
     }
+
+    public void signUp (String name, String email, String password) {
+        System.out.println(name);
+        System.out.println(email);
+        System.out.println(password);
+
+        String sql = "INSERT INTO user (user_name, email, user_password, is_super) VALUES (?, ?, ?, ?)";
+//        String sql = "INSERT INTO user (user_name, email, user_password, is_super) VALUES (" + name + ", " + email + ", " +;
+
+        try(Connection conn = factory.obtemConexao()){
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+
+                ps.setString(1, name);
+                ps.setString(2, email);
+                ps.setString(3, password);
+                ps.setBoolean(4, false);
+                ps.execute();
+            } catch (SQLException e) {
+                System.out.println("qqqqqqqq : " + e);
+                throw new RuntimeException(e);
+            }
+        }catch(Exception e){
+            System.out.println("err on create user " + e);
+        }
+    }
 }

@@ -60,4 +60,8 @@ public class AuthService {
         return ( number > 0);
     }
 
+    public void signUp (String name, String email, String password) {
+        dao.signUp(name, email, password);
+    }
+
 }
