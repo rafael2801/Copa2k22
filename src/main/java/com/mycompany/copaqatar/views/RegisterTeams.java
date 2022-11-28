@@ -21,11 +21,11 @@ public class RegisterTeams {
     private JButton adicionarButton;
     private JButton btn_set_teams;
     private JScrollPane teamScroll;
-    private JButton cadastrarGruposButton;
     private JLabel totalTeam;
 
     private List<String> teams = new ArrayList<>();
     private GameService gameService = new GameService();
+    private final Color mainColor = new Color(105, 4, 34);
 
     public static void main(String[] args) {
         RegisterTeams r = new RegisterTeams();
@@ -91,18 +91,22 @@ public class RegisterTeams {
     private void fixComponents () {
 //        JList<String> list = new JList<>(s);
 //        this.teamScroll.setViewportView();
+        this.btn_set_teams.setBackground(mainColor);
+        this.adicionarButton.setBackground(mainColor);
+        this.btn_set_teams.setBackground(mainColor);
+        this.copa2k22Button.setBackground(mainColor);
 
     }
 
     private MouseAdapter clickListener () {
+        JFrame frame = this.frame;
         return new MouseAdapter()
         {
             public void mouseClicked(MouseEvent e)
             {
                 // you can open a new frame here as
                 // i have assumed you have declared "frame" as instance variable
-                frame = new JFrame("new frame");
-                frame.setVisible(true);
+                frame.setVisible(false);
 
             }
         };

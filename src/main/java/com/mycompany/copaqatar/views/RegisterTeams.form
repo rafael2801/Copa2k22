@@ -18,6 +18,8 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font name="Inter" size="20" style="0"/>
+              <foreground color="-65538"/>
               <text value="Copa 2k22"/>
             </properties>
           </component>
@@ -26,6 +28,8 @@
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font name="Inter" size="18" style="0"/>
+              <foreground color="-16777216"/>
               <text value="Sair"/>
             </properties>
           </component>
@@ -86,6 +90,8 @@
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font name="Inter" size="20" style="1"/>
+              <foreground color="-65538"/>
               <text value="Adicionar"/>
             </properties>
           </component>
@@ -99,6 +105,8 @@
               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font name="Inter" size="20" style="1"/>
+              <foreground color="-65538"/>
               <text value="Usar times oficiais da copa de 2022"/>
             </properties>
           </component>
@@ -118,14 +126,6 @@
             <border type="none"/>
             <children/>
           </scrollpane>
-          <component id="bc69a" class="javax.swing.JButton" binding="cadastrarGruposButton" default-binding="true">
-            <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Cadastrar grupos"/>
-            </properties>
-          </component>
           <grid id="39db1" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
