@@ -1,15 +1,20 @@
 package com.mycompany.copaqatar.service;
 
 import com.mycompany.copaqatar.DAO;
+import com.mycompany.copaqatar.models.Group;
+import com.mycompany.copaqatar.models.Time;
 import com.mycompany.copaqatar.models.User;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class AuthService {
 
     Connection connection = null;
     DAO dao = new DAO();
+
+    GameService gs = new GameService();
 
     public AuthService (Connection conn) {
         this.connection = conn;
@@ -50,14 +55,17 @@ public class AuthService {
     }
 
     public Boolean hasTeams (){
-        int number = 0;
-        try {
-            number = dao.quantidadeEquipesCadastradas();
+        ArrayList<Group> groups = gs.getAllGroups();
 
-        } catch (SQLException e) {
-            number = 0;
+        ArrayList<String> arr = new ArrayList<>();
+
+        for(Group g : groups){
+            for (Time t : g.getTimes()) {
+                arr.add(t.getNome());
+            }
         }
-        return ( number > 0);
+
+        return arr.size() > 0;
     }
 
     public void signUp (String name, String email, String password) {

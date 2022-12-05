@@ -1,5 +1,6 @@
 package com.mycompany.copaqatar.views;
 
+import com.mycompany.copaqatar.models.Group;
 import com.mycompany.copaqatar.models.User;
 import com.mycompany.copaqatar.service.GameService;
 
@@ -117,8 +118,13 @@ public class Home {
         });
 
         this.btn_simulate.addActionListener(evt -> {
-            gameService.play();
-            new GameResult().makeFrame();
+            ArrayList<Group> groups = gameService.getAllGroups();
+            for (Group g : groups) {
+                gameService.simulateGroupsStep(g, "Fase de grupos");
+            }
+//            gameService.play();
+            new GroupsStep().makeFrame();
+            this.frame.setVisible(false);
         });
 
         this.btn_logout.addMouseListener(this.clickListener());

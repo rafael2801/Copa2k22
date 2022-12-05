@@ -70,7 +70,8 @@ public class RegisterTeams {
         });
 
         this.btn_set_teams.addActionListener(evt -> {
-            gameService.setOficialTeams();
+            gameService.createDefaultGroups();
+            gameService.createDefaultTeams();
             this.frame.setVisible(false);
             User user = new User();
             user.setSuper(true);

@@ -1,0 +1,152 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema copa
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema copa
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `copa` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `copa` ;
+
+-- -----------------------------------------------------
+-- Table `copa`.`equipes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `copa`.`equipes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(200) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `copa`.`grupos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `copa`.`grupos` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `copa`.`games`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `copa`.`games` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fase` VARCHAR(200) NOT NULL,
+  `time_a` VARCHAR(200) NOT NULL,
+  `time_b` VARCHAR(200) NOT NULL,
+  `placar_a` INT NOT NULL,
+  `placar_b` INT NOT NULL,
+  `group_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `group_id` (`group_id` ASC) VISIBLE,
+  CONSTRAINT `games_ibfk_1`
+    FOREIGN KEY (`group_id`)
+    REFERENCES `copa`.`grupos` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 49
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `copa`.`times`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `copa`.`times` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
+  `grupos_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `grupos_id` (`grupos_id` ASC) VISIBLE,
+  CONSTRAINT `times_ibfk_1`
+    FOREIGN KEY (`grupos_id`)
+    REFERENCES `copa`.`grupos` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 33
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `copa`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `copa`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(200) NOT NULL,
+  `email` VARCHAR(200) NOT NULL,
+  `user_password` VARCHAR(200) NOT NULL,
+  `is_super` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+===================================================
+
+drop database copa;
+create database if not exists copa;
+use copa;
+
+CREATE TABLE IF NOT EXISTS `copa`.`equipes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(200) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE IF NOT EXISTS `copa`.`grupos` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`));
+
+  CREATE TABLE IF NOT EXISTS `copa`.`games` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fase` VARCHAR(200) NOT NULL,
+  `time_a` VARCHAR(200) NOT NULL,
+  `time_b` VARCHAR(200) NOT NULL,
+  `placar_a` INT NOT NULL,
+  `placar_b` INT NOT NULL,
+  `group_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `group_id` (`group_id` ASC) VISIBLE,
+  CONSTRAINT `games_ibfk_1`
+    FOREIGN KEY (`group_id`)
+    REFERENCES `copa`.`grupos` (`id`));
+
+    CREATE TABLE IF NOT EXISTS `copa`.`times` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(100) NOT NULL,
+  `grupos_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `grupos_id` (`grupos_id` ASC) VISIBLE,
+  CONSTRAINT `times_ibfk_1`
+    FOREIGN KEY (`grupos_id`)
+    REFERENCES `copa`.`grupos` (`id`));
+
+    CREATE TABLE IF NOT EXISTS `copa`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_name` VARCHAR(200) NOT NULL,
+  `email` VARCHAR(200) NOT NULL,
+  `user_password` VARCHAR(200) NOT NULL,
+  `is_super` TINYINT(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`));
