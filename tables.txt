@@ -150,3 +150,5 @@ CREATE TABLE IF NOT EXISTS `copa`.`grupos` (
   `user_password` VARCHAR(200) NOT NULL,
   `is_super` TINYINT(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id`));
+
+insert into user values (1, "rafa", "adm", "adm", true);

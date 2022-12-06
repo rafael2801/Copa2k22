@@ -1,5 +1,6 @@
 package com.mycompany.copaqatar.views;
 
+import com.mycompany.copaqatar.models.Time;
 import com.mycompany.copaqatar.models.User;
 import com.mycompany.copaqatar.service.GameService;
 
@@ -22,6 +23,7 @@ public class RegisterTeams {
     private JButton btn_set_teams;
     private JScrollPane teamScroll;
     private JLabel totalTeam;
+    private JLabel logout_label;
 
     private List<String> teams = new ArrayList<>();
     private GameService gameService = new GameService();
@@ -59,10 +61,15 @@ public class RegisterTeams {
 
     public void makeActions() {
         this.adicionarButton.addActionListener(e -> {
-            this.verifyQtd();
             String teamName = this.textTeam.getText();
+
+            if(teamName.equals("")) {
+                JOptionPane.showMessageDialog(null, "Digite um nome valido!");
+                return;
+            }
+            this.verifyQtd();
             teams.add(teamName);
-            gameService.saveTeam(teamName);
+//            gameService.saveTeam(teamName);
             JList<String> list = new JList<>(teams.toArray(new String[0]));
             this.teamScroll.setViewportView(list);
             this.textTeam.setText("");
@@ -78,14 +85,26 @@ public class RegisterTeams {
             new Home(user).makeFrame();
         });
 
+        this.logout_label.addMouseListener(this.clickListener());
+
     }
 
     private void verifyQtd () {
         if(teams.size() == 32) {
+
+            ArrayList<Time> casted = new ArrayList<>();
+            for (String str : teams) {
+                casted.add(new Time(str));
+            }
+
             JOptionPane.showMessageDialog(null, "Numero maximo de equipes cadastradas!", "Sistema",  JOptionPane.INFORMATION_MESSAGE);
             this.frame.setVisible(false);
-            this.distribuiteInGroups();
-            new Home().makeFrame();
+            gameService.createDefaultGroups();
+            gameService.createTeams(casted);
+            User user = new User();
+            user.setSuper(true);
+            new Home(user).makeFrame();
+
         }
     }
 

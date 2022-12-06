@@ -28,6 +28,8 @@ public class Home {
     private  JFrame frame;
 
     private User user;
+
+    private ArrayList<String> teams = new ArrayList<>();
     GameService gameService = new GameService();
 
     private final String[] mockTeams = {
@@ -70,6 +72,10 @@ public class Home {
 
     public Home (User user) {
         this.user = user;
+    }
+
+    public Home (ArrayList<String> teams) {
+        this.teams = teams;
     }
 
     public Home () {
@@ -135,8 +141,20 @@ public class Home {
         this.btn_simulate.setBackground(mainColor);
         this.btn_simulate.setOpaque(true);
 
-        String[] teams = gameService.getTeams();
-        String[] countries = gameService.getGroups();
+        String[] teams = {};
+        String[] countries = {};
+
+        if(this.teams.size() > 0) {
+
+        } else {
+            teams = gameService.getTeams();
+        }
+
+        if(this.teams.size() > 0) {
+
+        } else {
+            countries = gameService.getGroups();
+        }
 
         this.groupList.setListData(countries);
 

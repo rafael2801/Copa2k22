@@ -50,6 +50,7 @@ public class Final {
     private void makeActions () {
         this.btn_logout.addActionListener(evt -> {
             this.frame.setVisible(false);
+            gs.deleteAll();
         });
     }
 }

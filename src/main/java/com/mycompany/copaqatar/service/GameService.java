@@ -62,9 +62,16 @@ public class GameService {
     }
 
     public void saveTeam (String name)  {
-        try {
-            dao.salvarEquipe(new Equipe(name));
+        try (Connection connection = factory.obtemConexao()) {
+//            dao.salvarEquipe(new Equipe(name));
+            String sql = "INSERT INTO times (nome) VALUES (?)";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, name);
+            ps.execute();
+
         } catch (SQLException e) {
+            System.out.println("Err on create team: " + e);
             throw new RuntimeException(e);
         }
     }
@@ -128,7 +135,25 @@ public class GameService {
     }
 
     public void deleteAll () {
-        dao.deleteAll();
+        try (Connection connection = factory.obtemConexao()) {
+            String sqlDeleteGames = "delete from games limit 1000";
+            PreparedStatement deleteGamesPs = connection.prepareStatement(sqlDeleteGames);
+
+            deleteGamesPs.execute();
+
+            String sqlDeleteTimes = "delete from times limit 1000";
+            PreparedStatement deleteTimesPs = connection.prepareStatement(sqlDeleteTimes);
+
+            deleteTimesPs.execute();
+
+            String sqlDeleteGrupos = "delete from grupos limit 1000";
+            PreparedStatement deleteGruposPs = connection.prepareStatement(sqlDeleteGrupos);
+
+            deleteGruposPs.execute();
+        } catch (SQLException e) {
+            System.out.println("Err on delete all: " + e);
+            throw new RuntimeException(e);
+        }
     }
 
     public void play () {
@@ -916,6 +941,27 @@ public class GameService {
             System.out.println("err on create quartas groups 2233r523452345: " + e);
         }
         return arr;
+    }
+
+    public void createTeams (ArrayList<Time> teams) {
+
+        try ( Connection connection = factory.obtemConexao()) {
+
+            for (int i = 1; i < 9; i++) {
+                for (int j = 0; j < 4; j++) {
+                    String sql = "INSERT INTO times (nome, grupos_id) VALUES (?, ?)";
+                    PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setString(1, teams.get(((i - 1) * 4) + j).getNome());
+                    ps.setInt(2, i);
+                    ps.execute();
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Err on create my teams: " + e);
+            throw new RuntimeException(e);
+        }
+
     }
     private int getRandomNumber () {
         return (int)(Math.random() * 4);

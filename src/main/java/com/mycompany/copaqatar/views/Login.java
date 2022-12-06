@@ -1,11 +1,16 @@
 package com.mycompany.copaqatar.views;
 
 import com.mycompany.copaqatar.ConnectionFactory;
+import com.mycompany.copaqatar.components.ImagePanel;
 import com.mycompany.copaqatar.models.User;
 import com.mycompany.copaqatar.service.AuthService;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Login {
     private JTextField eMailTextField;
@@ -19,6 +24,7 @@ public class Login {
     private JTextField emailField;
     private JPasswordField passwordField;
     private JButton cadastrarButton;
+    private JPanel imageContainer;
 
     private final Color mainColor = new Color(105, 4, 34);
 
@@ -74,7 +80,14 @@ public class Login {
             this.frame.setVisible(false);
             new SignUp().makeFrame();
         });
+
+        this.fixComponents();
+    }
+
+    private void fixComponents () {
+//            this.imageContainer = new ImagePanel();
     }
 
 }
+
 
