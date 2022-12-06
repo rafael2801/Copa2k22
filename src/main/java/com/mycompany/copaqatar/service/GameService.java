@@ -241,6 +241,18 @@ public class GameService {
 
         }
 
+        ArrayList<Group> sGroups = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            Group newGroup = new Group();
+
+            for (int j = 0; j < 4; j++) {
+            newGroup.addTeam(times.get((i*4) + j));
+            }
+
+            sGroups.add(newGroup);
+        }
+
         this.createOctavesGroups();
 
         this.createOctavesTeams(times);
@@ -248,20 +260,41 @@ public class GameService {
         ArrayList<Group> octaveGroups = this.getOctaveGroups();
 
         for (Group octaveGroup : octaveGroups) {
-            for (int i = 0; i < octaveGroup.getTimes().size(); i++) {
-                for (int j = i + 1; j < octaveGroup.getTimes().size(); j++) {
-                    Game game = new Game();
-                    game.setFase("Oitavas");
-                    game.setTimeA(octaveGroup.getTimes().get(i).getNome()); // time A name
-                    game.setTimeB(octaveGroup.getTimes().get(j).getNome()); // time B name
-                    game.setPlacarTimeA(this.getRandomNumber());
-                    game.setPlacarTimeB(this.getRandomNumber());
-                    game.setGroup_id(octaveGroup.getId());
 
-                    this.saveGame(game);
+            Game game = new Game();
+            game.setFase("Oitavas");
+            game.setTimeA(octaveGroup.getTimes().get(0).getNome()); // time A name
+            game.setTimeB(octaveGroup.getTimes().get(2).getNome()); // time B name
+            game.setPlacarTimeA(this.getRandomNumber());
+            game.setPlacarTimeB(this.getRandomNumber());
+            game.setGroup_id(octaveGroup.getId());
 
-                }
-            }
+            this.saveGame(game);
+
+            Game secondGame = new Game();
+            secondGame.setFase("Oitavas");
+            secondGame.setTimeA(octaveGroup.getTimes().get(1).getNome()); // time A name
+            secondGame.setTimeB(octaveGroup.getTimes().get(3).getNome()); // time B name
+            secondGame.setPlacarTimeA(this.getRandomNumber());
+            secondGame.setPlacarTimeB(this.getRandomNumber());
+            secondGame.setGroup_id(octaveGroup.getId());
+
+            this.saveGame(secondGame);
+
+//            for (int i = 0; i < octaveGroup.getTimes().size(); i++) {
+//                for (int j = i + 1; j < octaveGroup.getTimes().size(); j++) {
+//                    Game game = new Game();
+//                    game.setFase("Oitavas");
+//                    game.setTimeA(octaveGroup.getTimes().get(i).getNome()); // time A name
+//                    game.setTimeB(octaveGroup.getTimes().get(j).getNome()); // time B name
+//                    game.setPlacarTimeA(this.getRandomNumber());
+//                    game.setPlacarTimeB(this.getRandomNumber());
+//                    game.setGroup_id(octaveGroup.getId());
+//
+//                    this.saveGame(game);
+//
+//                }
+//            }
         }
 
     }
